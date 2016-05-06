@@ -1,0 +1,31 @@
+<fieldset>
+    <legend>Customers List</legend>
+        
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <td>Customer</td>
+                <td>Entry Date</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="customer in vm.customers">
+                <td>
+                    <a ui-sref="customerList.customerEdit({customerId: customer.customerId})">
+                        {{ customer.customerName}}
+                    </a>
+                </td>
+                <td>{{ customer.entryDate | date }}</td>
+                <td>
+                    <a class="btn btn-primary" ui-sref="customerList.customerEdit({customerId: customer.customerId})">
+                        Edit
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    
+</fieldset>

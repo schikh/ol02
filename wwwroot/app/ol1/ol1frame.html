@@ -1,0 +1,117 @@
+<!--
+<div class="sidebar-wrapper" ng-class="{'open': vm.frame.sidebarActive('sidebar')}" ui-view="sidebar">
+</div>
+<div class="sidebar-wrapper" ng-class="{'open': vm.frame.sidebarActive('layerbar')}" ui-view="layerbar">
+</div>
+<div id="main-area-wrapper" ng-class="{'wide': vm.frame.sidebarActivated()}">
+    <div style="height: calc(100% - 36px);" ui-view="map">
+    </div>
+    <div ui-view="toolbar">
+    </div>
+</div>
+-->
+
+<sw-tabstrip>
+  <sw-tabstrip-sidebar>
+    <sw-pane title="Drawing tools">
+      <h4>Drawin tools</h4>
+      <sw-toolbar>
+        <sw-toolbar-button title="Bounty Hunters" />
+        <sw-toolbar-button title="Dear Star" />
+        <sw-toolbar-button title="I love you" />
+      </sw-toolbar>
+    </sw-pane>
+    <sw-pane title="Layers">
+      <h4>Layers</h4>
+    </sw-pane>
+    <sw-pane title="?">
+      <h4>?</h4>  
+    </sw-pane>
+  </sw-tabstrip-sidebar>
+  <sw-tabstrip-map>
+    <div id="map" ng-controller="ol11EditCtrl as vm" style="height: 100%;"></div>
+  </sw-tabstrip-map>
+</sw-tabstrip>
+
+<script type="text/ng-template" id="swToolbar.html">
+  <ul class="toolbar">
+    <li ng-repeat="toolbarButton in toolbarButtons" ng-class="{active: toolbarButton.selected}">
+      <a ng-click="toggle(toolbarButton)">
+        <i class="menu-icon fa" ng-class="{'fa-bars': !toolbarButton.selected, 'fa-remove': toolbarButton.selected}"></i>
+      </a>
+    </li>
+  </ul>
+  <div ng-transclude></div>
+</script>
+
+<script type="text/ng-template" id="swTabstrip.html">
+  <div id="main-area-wrapper" ng-class="{'wide': anyPaneSelected()}">
+    <div style="height: calc(100% - 36px);" ng-transclude="map">
+    </div>
+    <div>
+      <ul class="toolbar">
+        <li ng-repeat="pane in panes" ng-class="{active: pane.selected}">
+          <a ng-click="toggle(pane)">
+            <i class="menu-icon fa" ng-class="{'fa-bars': !pane.selected, 'fa-remove': pane.selected}"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-wrapper" ng-transclude="sidebar" ng-class="{'open': anyPaneSelected()}">
+  </div>
+</script>
+
+<script type="text/ng-template" id="swPane.html">
+  <div ng-show="selected" ng-transclude></div>
+</script>
+
+<style>
+  ul.toolbar2 {
+    /*list-style-type : none; */
+    /* Car sinon les puces se placent n'importe où */
+    display: inline-block;
+    background-color: pink;
+    -webkit-padding-start: 0px;
+  }
+  /* Je sélectionne les <li> du menu horizontal */
+  
+  ul.toolbar2 li {
+    display: inline;
+    /*display: inline-block;*/
+    background-color: blue;
+    font-size: 24px;
+    /*width:50px;*/
+    margin: 5px;
+    padding: 6px;
+  }
+  
+  ul.toolbar {
+    list-style-type: none;
+    display: inline-block;
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 0px;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0px;
+  }
+  
+  ul.toolbar li {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 28px;
+    float: left;
+    border: 1px solid lightgray;
+    margin: 3px;
+  }
+  /* roll over - move the background image by the height of the button (100px) */
+  /*ul.toolbar li a:hover { background-color:green; }*/
+  /* active state - move the background image by twice height of the button (200px) */
+  
+  ul.toolbar li a.active,
+  ul.toolbar li a.active:hover {
+    background-color: red;
+  }
+</style>

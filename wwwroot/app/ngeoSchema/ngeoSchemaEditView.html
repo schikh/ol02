@@ -1,0 +1,37 @@
+<div>
+    <style>
+        #map {
+            /*width: 800px;*/
+            height: 440px;
+        }
+        
+        [ngeo-btn] {
+            width: 100px;
+            margin: 5px;
+        }
+    </style>
+
+    <div id="map" xxxngeo-map="vm.map" xxxng-click="vm.mapClick"></div>
+    <input type="checkbox" id="visible" ng-model="vm.visibleChecked" ng-change="vm.toggleSync(vm.visibleChecked)"> Toggle Layer Visibility
+
+    <button ng-click="vm.doBounce(vm.rome);">Bounce To Rome</button>
+
+    <div id="overlay" style="background-color: white; border-radius: 10px; border: 1px solid black; padding: 5px 10px;">
+    </div>
+    <div ngeo-btn-group>
+        <button ngeo-btn class="btn btn-success" ng-model="vm.drawPoint.active">Point</button>
+        <button ngeo-btn class="btn btn-success" ng-model="vm.drawLine.active">Linestring</button>
+        <button ngeo-btn class="btn btn-success" ng-model="vm.drawPolygon.active">Polygon</button>
+    </div>
+    <!--<button ngeo-btn class="btn btn-primary" ng-model="vm.showInfoxxx">Info</button>
+    
+    <div ng-show="vm.showInfoxxx" ng-cloak class="alert alert-success" role="alert">
+        <b>ngeo-btn</b> directive works also outside <b>ngeo-btn-group</b> one
+    </div>-->
+
+    <!--<p id="desc">
+        This example shows how to use the <code>ngeo-btn-group</code> 
+        and <code>ngeo-btn</code> directives to activate/deactivate OpenLayers 
+        interactions in a toggle group.
+    </p>-->
+</div>

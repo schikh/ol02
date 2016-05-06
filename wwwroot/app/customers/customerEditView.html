@@ -1,0 +1,91 @@
+<form class="form-horizontal" name="customerForm"
+      novalidate>
+    <fieldset>
+        <legend>Basic Customer Information</legend>
+        <div class="form-group"
+             ng-class="{'has-error':customerForm.inputCustomerName.$invalid &&
+                                    customerForm.inputCustomerName.$dirty}">
+            <label class="col-md-2 control-label"
+                   for="inputCustomerName">Customer Name</label>
+
+            <div class="col-md-4">
+                <input class="form-control"
+                       id="inputCustomerName"
+                       name="inputCustomerName"
+                       type="text"
+                       placeholder="Customer Name (required)"
+                       ng-model="vm.customer.customerName"
+                       required
+                       ng-minlength="4"
+                       ng-maxlength="12" />
+            </div>
+            <span class="help-block has-error">
+                <span ng-show="customerForm.inputCustomerName.$error.required">
+                    Customer name is required.
+                </span>
+                <span ng-show="customerForm.inputCustomerName.$error.minlength">
+                    Customer name must be at least 4 characters in length.
+                </span>
+                <span ng-show="customerForm.inputCustomerName.$error.maxlength">
+                    Customer name cannot exceed 12 characters in length.
+                </span>
+            </span>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label"
+                   for="inputAvailabilityDate">Entry Date</label>
+
+            <div class="col-md-4">
+                <div class="input-group">
+                    <input class="form-control"
+                           id="inputAvailabilityDate"
+                           type="text"
+                           datepicker-popup="dd MMM yyyy "
+                           is-open="vm.opened"
+                           ng-model="vm.customer.entryDate" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-default"
+                                ng-click="vm.open($event)">
+                            <i class="glyphicon glyphicon-calendar" />
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label"
+                   for="inputAddress">Address</label>
+
+            <div class="col-md-10">
+                <textarea class="form-control"
+                          id="inputAddress"
+                          placeholder="Address"
+                          rows="3"
+                          ng-model="vm.customer.address" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-4 col-md-offset-2">
+                <span>
+                    <button class="btn btn-primary"
+                            style="width:80px;margin-right:10px"
+                            ng-click="vm.submit(customerForm.$valid)"
+                            ng-disabled="customerForm.$invalid">
+                        Save
+                    </button>
+                </span>
+                <span>
+                    <button class="btn btn-default"
+                            style="width:70px"
+                            ng-click="vm.cancel()">
+                        Cancel
+                    </button>
+                </span>
+            </div>
+        </div>
+
+    </fieldset>
+</form>
+
