@@ -73,97 +73,31 @@ body {
     bottom: 61px;    
 }
 
-
-
-
-ul.sidebar .sidebar-main a,
-.sidebar-footer,
-ul.sidebar .sidebar-list a:hover {
-    /* Sidebar header and footer color */
-    background: #2d3e63;
-}
-ul.sidebar {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    text-indent: 20px;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-ul.sidebar li a {
-    color: #fff;
-    display: block;
-    float: left;
-    text-decoration: none;
-    width: 250px;
-}
-ul.sidebar .sidebar-main {
-    height: 65px;
-}
-ul.sidebar .sidebar-main a {
-    font-size: 18px;
-    line-height: 60px;
-}
-ul.sidebar .sidebar-main a:hover {
-    cursor: pointer;
-}
-ul.sidebar .sidebar-main .menu-icon {
-    float: right;
-    font-size: 18px;
-    padding-right: 28px;
-    line-height: 60px;
-}
-ul.sidebar .sidebar-title {
-    color: #738bc0;
-    font-size: 12px;
-    height: 35px;
-    line-height: 40px;
-    text-transform: uppercase;
-    transition: all .6s ease 0s;
-}
-ul.sidebar .sidebar-list {
-    height: 40px;
-}
-ul.sidebar .sidebar-list a {
-    text-indent: 25px;
-    font-size: 15px;
-    color: #b2bfdc;
-    line-height: 40px;
-}
-ul.sidebar .sidebar-list a:hover {
-    color: #fff;
-    border-left: 3px solid #e99d1a;
-    text-indent: 22px;
-}
-ul.sidebar .sidebar-list a:hover .menu-icon {
-    text-indent: 25px;
-}
-ul.sidebar .sidebar-list .menu-icon {
-    float: right;
-    padding-right: 29px;
-    line-height: 40px;
-    width: 70px;
-}
-
-.sidebar-footer {
-    position: absolute;
-    height: 40px;
-    bottom: 0;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    transition: all .6s ease 0s;
+  ul.toolbar {
+    list-style-type: none;
+    display: inline-block;
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 0px;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0px;
+  }
+  
+  ul.toolbar li {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
     text-align: center;
-}
-.sidebar-footer div a {
-    color: #b2bfdc;
-    font-size: 12px;
-    line-height: 43px;
-}
-.sidebar-footer div a:hover {
-    color: #ffffff;
-    text-decoration: none;
-}
+    font-size: 28px;
+    float: left;
+    border: 1px solid lightgray;
+    margin: 3px;
+  }
+  /* roll over - move the background image by the height of the button (100px) */
+  /*ul.toolbar li a:hover { background-color:green; }*/
+  /* active state - move the background image by twice height of the button (200px) */
+  
+  ul.toolbar li a.active,
+  ul.toolbar li a.active:hover {
+    background-color: red;
+  }

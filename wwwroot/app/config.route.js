@@ -3,8 +3,6 @@
 
     var app = angular.module('app');
 
-    //app.constant('routes', getRoutes());
-
     app.config(['$stateProvider', '$urlRouterProvider', 
         function ($stateProvider, $urlRouterProvider) {
             $stateProvider.state('home', {
@@ -19,32 +17,12 @@
                     url: '/ol1',
                     views: {
                         '@': { 
-                            templateUrl: 'app/ol1/ol1frame.html'
+                            templateUrl: 'app/ol1/frame.html',
+                            controller: 'mapCtrl as vm2'
                         }
                     }
                 })                
-                .state('ol1.x', {
-                    url: '/x',
-                    views: {
-                        'sidebar': {
-                            templateUrl: 'app/ol1/sidebar.html',
-                            controller: 'sidebar as vm'
-                        },
-                        'layerbar': {
-                            templateUrl: 'app/ol1/layerbar.html',
-                            controller: 'layerbar as vm'
-                        },
-                        'map': {
-                            templateUrl: 'app/ol1/map.html',
-                            controller: 'ol11EditCtrl as vm'
-                        },                       
-                        'toolbar': {
-                            templateUrl: 'app/ol1/toolbar.html',
-                            controller: 'toolbar as vm'
-                        } 
-                    }
-                })
-                
+               
                 .state('ol1.2', {
                     url: '/ol1.2',
                     views: {
