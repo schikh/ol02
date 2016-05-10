@@ -6,70 +6,87 @@
 
     angular.module('ngeoSchemaModule')
         .factory('mapService', ['ol', function (ol) {
-            var service = function(divElement) {
+            return {
+                getInstance: function () {
+                    return new service();
+                }
+            }
+
+            function service() {
                 var map;
-                
-                this.toggleDrawingMode= function() {
-                    // if(!drawingIteration) {
-                    //    drawingIteration = createInteraction();
-                    // }
-                    // var flag = _.some(vm.map.getInteractions().getArray(), function(iteraction) {
-                    //     return iteraction == drawingIteration;
-                    // });
-                    // if(flag) {
-                    //     vm.map.removeInteraction(drawingIteration);
-                    // }
-                    // else {
-                    //     vm.map.addInteraction(drawingIteration);
-                    // }
-                    var xxx = _.find(map.getInteractions().getArray(), { 'active': true });
-                    alert(xxx);
-                };
-                
-                this.addInteraction= function(interaction) {
-                    map.addInteraction(interaction);
-                };
-                
-                this.initialize = function(divElement) {
+                var addinteraction;
+
+                this.initialize = function (divElement) {
                     map = new ol.Map({
                         target: divElement
                     });
                     ol11EditCtrl(null, ol, map);
                 };
-            };
-            
-            return {
-                getInstance: function(){ 
-                    return new service(); 
-                }
-            }
-    }]);
 
-    angular
-        .module('ngeoSchemaModule')
+                this.drawingInteractionActive = function () {
+                    return _.some(map.getInteractions().getArray(),  function(obj) {
+                        return obj instanceof ol.interaction.Draw; 
+                    });
+                };
+
+                this.toggleDrawingInteraction = function () {
+                    if (addinteraction == null) {
+                        addinteraction = createInteraction();
+                    }
+                    console.log(this.drawingInteractionActive());
+                    if(this.drawingInteractionActive()){
+                        map.removeInteraction(addinteraction);
+                    }
+                    else {
+                        map.addInteraction(addinteraction);
+                    }
+                };
+            }
+
+            function createInteraction() {
+                var draw = new ol.interaction.Draw({
+                    type: 'LineString',
+                    style: new ol.style.Style({
+                        image: new ol.style.RegularShape({
+                            stroke: new ol.style.Stroke({ color: 'red', width: 1 }),
+                            points: 4,
+                            radius: 30,
+                            radius2: 0,
+                            angle: 0
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'red',
+                            width: 1
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(255, 0, 0, 0.3)'
+                        })
+                    }),
+                    active: false
+                });
+                return draw;
+            }
+        }]);
+
+    angular.module('ngeoSchemaModule')
         .controller('mapCtrl', ['$scope', 'mapService', function ($scope, mapService) {
             var vm = this;
-            vm.map = mapService.getInstance();
+            vm.mapService = mapService.getInstance();
             vm.name = 'mapCtrl';
-    }]);
+        }]);
 
     angular.module('ngeoSchemaModule')
         .directive('swMap', ['ol', function (ol) {
             return {
                 restrict: 'E',
                 transclude: true,
-              //  scope: true, // { map: '='},
+                scope: { mapService: '=' },
                 templateUrl: 'swMap.html',
-                //controllerAs: 'vm',
-                controller: 'mapCtrl',
                 compile: function () {
                     return {
                         pre: function (scope, element, attributes, controller) {
-                console.log("swMap pre");
-                console.dir(scope);
-                console.dir(controller);
                             var div = element[0].querySelector('div');
-                            controller.map.initialize(div);
+                            scope.mapService.initialize(div);
                         },
                         post: function (scope) {
                         }
@@ -80,48 +97,14 @@
 
     angular.module('ngeoSchemaModule')
         .directive('swDrawingInteraction', ['ol', function (ol) {
-
-        function createInteraction() {
-            var draw = new ol.interaction.Draw({
-                type: 'LineString',
-                style: new ol.style.Style({
-                    image: new ol.style.RegularShape({
-                        stroke: new ol.style.Stroke({ color: 'red', width: 1 }),
-                        points: 4,
-                        radius: 30,
-                        radius2: 0,
-                        angle: 0
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'red',
-                        width: 1
-                    }),
-                    fill: new ol.style.Fill({
-                        color: 'rgba(255, 0, 0, 0.3)'
-                    })
-                }),
-                active: false
-            });
-            return draw;
-        } 
-          
-        return {
-            restrict: "E",
-            require: "^swMap",
-           // scope: true,                               //false to share same scope as parent swMap scope
-            controller: ['$scope', 'ol', function ($scope, ol) {
-                var vm = this;
-            }],
-            link: function (scope, element, attributes, swMap) {
-                console.log("swDrawingInteraction link");
-                console.log(scope);
-                console.log(swMap);
-                var drawingIteration = createInteraction();
-                swMap.map.addInteraction(drawingIteration);
-            }
-        };
-    }]);   
-
+            return {
+                restrict: "E",
+                scope: { mapService: '=' },
+                link: function (scope, element, attributes, swMap) {
+                    scope.mapService.toggleDrawingInteraction();
+                }
+            };
+        }]);
 
     function ol11EditCtrl($scope, ol, map) {
         var vm = $scope;
@@ -262,8 +245,8 @@
         map.on('pointermove', function (e) {
             // vm.position = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
             // $scope.$apply();
-            
-            
+
+
             //   feature = null;
             //   var features = someLayer.getSource().getFeaturesAtCoordinate(evt.coordinate);
             //   if (features.length) {
@@ -272,6 +255,7 @@
         });
 
         map.on("click", function (e) {
+            return;
             // map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
             //     var x = 0;
             // });
@@ -330,21 +314,10 @@
         });
         map.addInteraction(modify);
 
-
-
-
-
-
-
-
         // var select = new ol.interaction.Select({
         //   layers: [layers[0]]
         // });
 
         // map.addInteraction(select);
     }
-
-
-    
-     
-} ());
+}());

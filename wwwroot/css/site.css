@@ -25,6 +25,9 @@ body {
   background-color: #2d3e63;
 }
 
+.fa-cog {
+  color: pink;
+}
 
 #main-area-wrapper.wide-add,
 #main-area-wrapper.wide-remove {

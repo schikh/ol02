@@ -3,40 +3,41 @@
     <sw-pane title="Drawing tools">
       <h4>Drawin tools</h4>
       <sw-toolbar>
-        <sw-toolbar-button title="1" />
-        <sw-toolbar-button title="2" />
-        <sw-toolbar-button title="3" />
+        <sw-toolbar-button title="1" icon="fa-pencil" ng-click="vm2.mapService.toggleDrawingInteraction()" />
+        <sw-toolbar-button title="2" icon="fa-pencil" ng-click="vm2.mapService.toggleDrawingInteraction()" />
+        <sw-toolbar-button title="3" icon="fa-pencil" ng-click="vm2.mapService.toggleDrawingInteraction()" />
+        <sw-toolbar-button title="4" icon="fa-pencil" ng-click="vm2.mapService.toggleDrawingInteraction()" />
+        <sw-toolbar-button title="5" icon="fa-pencil" ng-click="vm2.mapService.toggleDrawingInteraction()" />
       </sw-toolbar>
-      <button class="btn" ng-click="vm.toggleDrawingMode()">DRAW2</button>       
     </sw-pane>
     <sw-pane title="Layers">
       <h4>Layers</h4>
     </sw-pane>
     <sw-pane title="?">
-      <h4>?</h4>  
+      <h4>?</h4>
     </sw-pane>
   </sw-tabstrip-sidebar>
   <sw-tabstrip-map>
-    <sw-map>
-      <sw-drawing-interaction></sw-drawing-interaction>
+    <sw-map map-service="vm2.mapService">
+      <sw-drawing-interaction map-service="vm2.mapService"></sw-drawing-interaction>
     </sw-map>
   </sw-tabstrip-map>
 </sw-tabstrip>
 
 <script type="text/ng-template" id="swMap.html">
-    <div style="height: 100%;">
-      <div ng-transclude></div>
-    </div>
+  <div style="height: 100%;">
+    <div ng-transclude></div>
+  </div>
 </script>
 
 <script type="text/ng-template" id="swToolbar.html">
   <ul class="toolbar">
     <li ng-repeat="toolbarButton in toolbarButtons" ng-class="{active: toolbarButton.selected}">
       <a ng-click="toggle(toolbarButton)">
-        <i class="menu-icon fa" ng-class="{'fa-bars': !toolbarButton.selected, 'fa-remove': toolbarButton.selected}"></i>
+        <i class="menu-icon fa {{toolbarButton.icon}}"></i>
       </a>
     </li>
-  </ul>
+  </ul> 
   <div ng-transclude></div>
 </script>
 
@@ -48,7 +49,7 @@
       <ul class="toolbar">
         <li ng-repeat="pane in panes" ng-class="{active: pane.selected}">
           <a ng-click="toggle(pane)">
-            <i class="menu-icon fa" ng-class="{'fa-bars': !pane.selected, 'fa-remove': pane.selected}"></i>
+            <i class="menu-icon fa fa-pencil"></i>
           </a>
         </li>
       </ul>

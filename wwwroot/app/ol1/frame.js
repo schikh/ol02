@@ -1,44 +1,5 @@
-// (function () {
-//     'use strict';
-
-//     angular.module('ngeoSchemaModule')
-//         .controller("frame", ["$scope", "frame2", function ($scope, frame2) {
-//         var vm = this;
-//         vm.frame = frame2;
-//     }]);
-
-//     angular.module('ngeoSchemaModule')
-//         .factory('frame2', [function () {
-//         var activeSidebarId = null;
-//         var value = false;  
-//         return {
-//             sidebarActivated: function () {
-//                 return activeSidebarId != null;
-//             },
-//             sidebarActive: function (sidebarId) {
-//                 return sidebarId == activeSidebarId;
-//             },
-//             toggleSidebar: function (sidebarId) {
-//                 if (sidebarId == activeSidebarId)
-//                 {
-//                     activeSidebarId = null;
-//                 }
-//                 else
-//                 {
-//                     activeSidebarId = sidebarId;
-//                 }
-//             }
-//         };
-//     }]);
-// })();
-
-
 (function () {
     'use strict';
-
-    // angular.module('ngeoSchemaModule')
-    //     .controller('frame', function ($scope) {
-    //     });
 
     angular.module('ngeoSchemaModule')
         .directive('swTabstrip', function () {
@@ -93,8 +54,6 @@
             }
         });
 
-
-
     angular.module('ngeoSchemaModule')
         .directive('swToolbar', function () {
             return {
@@ -120,6 +79,7 @@
                             toolbarButton.selected = true;
                             $scope.selectedToolbarButton = toolbarButton;
                         }
+                        toolbarButton.ngClick();
                     }
                     this.add = function (toolbarButton) {
                         toolbarButton.selected = false;
@@ -135,7 +95,9 @@
                 restrict: 'E',
                 template: '',
                 scope: {
-                    title: '@'
+                    title: '@',
+                    icon: '@',
+                    ngClick: '&'
                 },
                 require: '^swToolbar',
                 link: function (scope, el, attrs, toolbarCtrl) {
