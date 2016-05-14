@@ -24,8 +24,8 @@
                 };
 
                 this.drawingInteractionActive = function () {
-                    return _.some(map.getInteractions().getArray(),  function(obj) {
-                        return obj instanceof ol.interaction.Draw; 
+                    return _.some(map.getInteractions().getArray(), function (obj) {
+                        return obj instanceof ol.interaction.Draw;
                     });
                 };
 
@@ -34,7 +34,7 @@
                         addinteraction = createInteraction();
                     }
                     console.log(this.drawingInteractionActive());
-                    if(this.drawingInteractionActive()){
+                    if (this.drawingInteractionActive()) {
                         map.removeInteraction(addinteraction);
                     }
                     else {
@@ -106,9 +106,7 @@
             };
         }]);
 
-    function ol11EditCtrl($scope, ol, map) {
-        var vm = $scope;
-
+    function getXxxLayers() {
         var format = new ol.format.TopoJSON();
         var tileGrid = ol.tilegrid.createXYZ({ maxZoom: 19 });
         var roadStyleCache = {};
@@ -129,7 +127,6 @@
                 width: 1
             })
         });
-
         var sourceVector = new ol.source.VectorTile({
             format: format,
             tileGrid: tileGrid,
@@ -231,6 +228,26 @@
             //   }
             // })
         ];
+        return layers;
+    }
+
+    function CreateModifyInteraction(features) {
+        var modifyInteraction = new ol.interaction.Modify({
+            features: features,
+            style: new ol.style.Style(),
+            // the SHIFT key must be pressed to delete vertices, so
+            // that new vertices can be drawn at the same position
+            // of existing vertices
+            deleteCondition: function (event) {
+                return ol.events.condition.shiftKeyOnly(event) &&
+                    ol.events.condition.singleClick(event);
+            }
+        });
+        return modifyInteraction;
+    } 
+
+    function ol11EditCtrl($scope, ol, map) {
+        var layers = getXxxLayers();
 
         layers.forEach(function (layer) {
             map.addLayer(layer);
@@ -241,6 +258,28 @@
             zoom: 15
         })
         map.setView(view);
+
+        // The features are not added to a regular vector layer/source,
+        // but to a feature overlay which holds a collection of features.
+        // This collection is passed to the modify and also the draw
+        // interaction, so that both can add or modify features.
+        var features = new ol.Collection();
+        var featureOverlay = new ol.layer.Vector({
+            source: new ol.source.Vector({ features: features }),
+            style: new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 0, 255, 0.3)'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'blue',
+                    width: 1
+                })
+            })
+        });
+        featureOverlay.setMap(map);
+
+        var modifyInteraction = CreateModifyInteraction(features);
+        //smap.addInteraction(modifyInteraction);
 
         map.on('pointermove', function (e) {
             // vm.position = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
@@ -274,50 +313,48 @@
             console.log(closest);
             console.log(oo);
         });
-
-
-
-
-
-
-
-
-        // The features are not added to a regular vector layer/source,
-        // but to a feature overlay which holds a collection of features.
-        // This collection is passed to the modify and also the draw
-        // interaction, so that both can add or modify features.
-        var features = new ol.Collection();
-        var featureOverlay = new ol.layer.Vector({
-            source: new ol.source.Vector({ features: features }),
-            style: new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(0, 0, 255, 0.3)'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'blue',
-                    width: 1
-                })
-            })
-        });
-        featureOverlay.setMap(map);
-
-        var modify = new ol.interaction.Modify({
-            features: features,
-            style: new ol.style.Style(),
-            // the SHIFT key must be pressed to delete vertices, so
-            // that new vertices can be drawn at the same position
-            // of existing vertices
-            deleteCondition: function (event) {
-                return ol.events.condition.shiftKeyOnly(event) &&
-                    ol.events.condition.singleClick(event);
-            }
-        });
-        map.addInteraction(modify);
-
-        // var select = new ol.interaction.Select({
-        //   layers: [layers[0]]
-        // });
-
-        // map.addInteraction(select);
     }
-}());
+} ());
+
+
+
+
+function
+      var features = new ol.Collection();
+      var featureOverlay = new ol.layer.Vector({
+        source: new ol.source.Vector({features: features}),
+        style: new ol.style.Style({
+          fill: new ol.style.Fill({
+            color: 'rgba(255, 255, 255, 0.2)'
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#ffcc33',
+            width: 2
+          }),
+          image: new ol.style.Circle({
+            radius: 7,
+            fill: new ol.style.Fill({
+              color: '#ffcc33'
+            })
+          })
+        })
+      });
+      featureOverlay.setMap(map);
+
+      var modify = new ol.interaction.Modify({
+        features: features,
+        // the SHIFT key must be pressed to delete vertices, so
+        // that new vertices can be drawn at the same position
+        // of existing vertices
+        deleteCondition: function(event) {
+          return ol.events.condition.shiftKeyOnly(event) &&
+              ol.events.condition.singleClick(event);
+        }
+      });
+      map.addInteraction(modify);
+
+      var draw = new ol.interaction.Draw({
+          features: features,
+          type: 'Polygon'
+        });
+      map.addInteraction(draw);
