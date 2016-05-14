@@ -84,7 +84,7 @@
                     this.add = function (toolbarButton) {
                         toolbarButton.selected = false;
                         $scope.toolbarButtons.push(toolbarButton);
-                    }
+                                             console.log($scope.toolbarButtons);                    }
                 }
             }
         });
