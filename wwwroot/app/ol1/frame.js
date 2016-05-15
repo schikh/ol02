@@ -7,7 +7,8 @@
                 restrict: 'E',
                 transclude: {
                     'map': 'swTabstripMap',
-                    'sidebar': 'swTabstripSidebar'
+                    'sidebar': 'swTabstripSidebar',
+                    'notification': 'swTabstripNotification'
                 },
                 scope: {},
                 templateUrl: 'swTabstrip.html',
@@ -79,12 +80,14 @@
                             toolbarButton.selected = true;
                             $scope.selectedToolbarButton = toolbarButton;
                         }
-                        toolbarButton.ngClick();
+                    console.log("toolbarButton click");    
+                    console.log(toolbarButton);    
+                        toolbarButton.click();
                     }
                     this.add = function (toolbarButton) {
                         toolbarButton.selected = false;
                         $scope.toolbarButtons.push(toolbarButton);
-                                             console.log($scope.toolbarButtons);                    }
+                    }
                 }
             }
         });
@@ -97,7 +100,7 @@
                 scope: {
                     title: '@',
                     icon: '@',
-                    ngClick: '&'
+                    click: '&'
                 },
                 require: '^swToolbar',
                 link: function (scope, el, attrs, toolbarCtrl) {

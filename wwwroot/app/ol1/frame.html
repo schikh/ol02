@@ -3,11 +3,10 @@
     <sw-pane title="Drawing tools">
       <h4>Drawin tools</h4>
       <sw-toolbar>
-        <sw-toolbar-button title="1" icon="fa-pencil" ng-click="vm2.mapService.toggleDrawingInteraction()" />
-        <sw-toolbar-button title="2" icon="fa-pencil" ng-click="vm2.mapService.toggleDrawingInteraction()" />
-        <sw-toolbar-button title="3" icon="fa-pencil" ng-click="vm2.mapService.toggleDrawingInteraction()" />
-        <sw-toolbar-button title="4" icon="fa-pencil" ng-click="vm2.mapService.toggleDrawingInteraction()" />
-        <sw-toolbar-button title="5" icon="fa-pencil" ng-click="vm2.mapService.toggleDrawingInteraction()" />
+        <sw-toolbar-button title="1" icon="fa-pencil" click="vm2.mapService.togglePolygonDrawingInteraction()" />
+        <sw-toolbar-button title="2" icon="fa-pencil" click="vm2.mapService.toggleLineStringDrawingInteraction()" />
+        <sw-toolbar-button title="3" icon="fa-pencil" click="vm2.mapService.togglePointDrawingInteraction()" />
+        <sw-toolbar-button title="3" icon="fa-pencil" click="vm2.mapService.toggleCircleDrawingInteraction()" />
       </sw-toolbar>
     </sw-pane>
     <sw-pane title="Layers">
@@ -22,6 +21,11 @@
       <sw-drawing-interaction map-service="vm2.mapService"></sw-drawing-interaction>
     </sw-map>
   </sw-tabstrip-map>
+
+  <sw-tabstrip-notification>
+      <div>Coordinate: {{vm2.pointerCoordinate | coordinateFormat}}</div>
+  </sw-tabstrip-notification>
+
 </sw-tabstrip>
 
 <script type="text/ng-template" id="swMap.html">
@@ -43,9 +47,9 @@
 
 <script type="text/ng-template" id="swTabstrip.html">
   <div id="main-area-wrapper" ng-class="{'wide': anyPaneSelected()}">
-    <div style="height: calc(100% - 66px);" ng-transclude="map">
+    <div style="height: calc(100% - 36px);" ng-transclude="map">
     </div>
-    <div>
+    <span style="float: left;">
       <ul class="toolbar">
         <li ng-repeat="pane in panes" ng-class="{active: pane.selected}">
           <a ng-click="toggle(pane)">
@@ -53,7 +57,8 @@
           </a>
         </li>
       </ul>
-    </div>
+    </span>
+    <span style="float: right;" ng-transclude="notification"></span>
   </div>
   <div class="sidebar-wrapper" ng-transclude="sidebar" ng-class="{'open': anyPaneSelected()}">
   </div>
